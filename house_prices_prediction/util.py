@@ -10,7 +10,7 @@ class DropMissingData(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
-    def transform(self, X:pd.DataFrame):
+    def transform(self, X: pd.DataFrame):
         return X.dropna().values
 
 
@@ -23,6 +23,3 @@ class DataFrameSelector(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         return X[self.attribute_names].values
-
-
-
