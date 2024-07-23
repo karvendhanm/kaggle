@@ -265,7 +265,7 @@ def process_data(df: pd.DataFrame, return_saleprice: bool = True,
     # /standard scaling
 
     # missing value imputation
-    df.loc[df['GarageYrBlt'].isna(), 'GarageYrBlt'] = df.loc[df['GarageYrBlt'].isna(), 'YrBuilt']
+    df.loc[df['GarageYrBlt'].isna(), 'GarageYrBlt'] = df.loc[df['GarageYrBlt'].isna(), 'YearBuilt']
 
     for col in ['average_price_at_date', 'avg_price_at_neighborhood']:
         df[col] = df[col].fillna(df[col].mean())
@@ -278,9 +278,41 @@ def process_data(df: pd.DataFrame, return_saleprice: bool = True,
     else:
         return df
 
-
-df = pd.read_csv(data_path + 'train.csv', dtype={'MoSold': 'int', 'YrSold': 'int'})
+# preprocessing training data
+df = pd.read_csv(data_path + 'train.csv')
 # df1 = pd.read_csv(data_path + 'AmesHousing.csv', dtype={'MoSold': 'int', 'YrSold': 'int'}).drop('PID', axis=1)
 # df1 = df1.rename({'Order': 'Id'}, axis=1)
 # df = pd.concat([df, df1], axis=0)
-process_data(df)
+df, salePriceMean, salePriceStd = process_data(df, mode='train')
+
+# preprocessing test data
+df_test = pd.read_csv(data_path + 'test.csv')
+df_test = process_data(df_test, return_saleprice=False, mode='test')
+
+# checking for validity of the processing:
+[col for col in df.columns if col not in df_test.columns]
+[col for col in df_test.columns if col not in df.columns]
+
+# machine learning
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
